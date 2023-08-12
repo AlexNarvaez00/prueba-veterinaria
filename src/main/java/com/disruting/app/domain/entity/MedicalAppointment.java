@@ -1,9 +1,12 @@
 package com.disruting.app.domain.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -20,6 +23,7 @@ import lombok.Setter;
 public class MedicalAppointment {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   /**
@@ -33,7 +37,7 @@ public class MedicalAppointment {
    */
   @ManyToOne
   private Patient patient;
- 
+
   /**
    * Veterianio
    */
@@ -43,6 +47,14 @@ public class MedicalAppointment {
   @Column(name = "date")
   private LocalDate date;
   // "date" date
-  public MedicalAppointment(){}
+
+  public MedicalAppointment(Owner owner, Patient patient, Veterinary veterinary, String date) {
+    this.owner = owner;
+    this.patient = patient;
+    this.veterinary = veterinary;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    this.date = LocalDate.parse(date, formatter);
+    // Timestamp.valueOf(LocalDateTime.parse(date));
+  }
 
 }

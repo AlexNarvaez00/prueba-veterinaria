@@ -5,15 +5,18 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * MedicalAppointment
  */
 @Entity
 @Table(name = "medical_appointments")
+@Getter
+@Setter
 public class MedicalAppointment {
 
   @Id
@@ -30,7 +33,7 @@ public class MedicalAppointment {
    */
   @ManyToOne
   private Patient patient;
-
+ 
   /**
    * Veterianio
    */
@@ -40,5 +43,6 @@ public class MedicalAppointment {
   @Column(name = "date")
   private LocalDate date;
   // "date" date
+  public MedicalAppointment(){}
 
 }

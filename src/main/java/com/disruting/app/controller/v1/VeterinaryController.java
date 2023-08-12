@@ -1,9 +1,11 @@
 package com.disruting.app.controller.v1;
 
-import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +24,7 @@ public class VeterinaryController {
   @Autowired
   private VeterinaryRepository repo;
 
-
-  @GetMapping
+  @GetMapping("")
   public Iterable<Veterinary> getAllVeterianries() {
     return repo.findAll();
   }
@@ -33,5 +34,8 @@ public class VeterinaryController {
     return repo.save(newVeterinary);
   }
 
-
+  @DeleteMapping("/{id}")
+  public void deleteVeterinary(@PathVariable(name = "id") UUID id) {
+    repo.deleteById(id);
+  }
 }

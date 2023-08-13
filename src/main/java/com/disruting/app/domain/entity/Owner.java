@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,15 +29,22 @@ public class Owner {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @NotBlank
+  @Pattern(regexp = "^[a-zA-Z]+$")
   @Column(name = "name", nullable = false, length = 50)
   private String name;
 
+  @NotBlank
+  @Pattern(regexp = "^[a-zA-Z]+$")
   @Column(name = "first_name", nullable = false, length = 50)
   private String first_name;
 
+  @NotBlank
+  @Pattern(regexp = "^[a-zA-Z]+$")
   @Column(name = "last_name", nullable = false, length = 50)
   private String last_name;
 
+  @NotBlank
   @Column(name = "phone", nullable = true, length = 15)
   private String phone;
 

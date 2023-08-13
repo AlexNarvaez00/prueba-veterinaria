@@ -12,6 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,9 +32,13 @@ public class Patient {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @NotBlank
+  @Pattern(regexp = "^[a-zA-Z]+$")
   @Column(name = "name", nullable = false, length = 50)
   private String name;
 
+  @Max(value = 3)
+  @Positive
   @Column(name = "type", nullable = false)
   private int type;
 

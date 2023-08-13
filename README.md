@@ -25,3 +25,11 @@ Finalmente visita cualquier de las siguientes url:
 * `http://localhost:8080/api/v1/owners`
 * `http://localhost:8080/api/v1/owners`
 
+## Información útil.
+
+* [Errores de validacion en formato JSON](https://johndobie.com/blog/validation-errors-in-spring-boot-microservices/)
+* [Ejemplos de spring boot](https://github.com/in28minutes/spring-boot-examples/blob/master/README.md)
+
+
+
+

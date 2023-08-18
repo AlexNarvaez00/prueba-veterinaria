@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.disruting.app.config.Cors;
 import com.disruting.app.domain.entity.*;
 import com.disruting.app.domain.repository.VeterinaryRepository;
 import com.disruting.app.exception.NotFound.VeterinaryNotFoundException;
@@ -27,6 +29,7 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/v1/veterinaries")
+@CrossOrigin(origins = { Cors.FRONT_END })
 public class VeterinaryController {
 
   @Autowired
@@ -44,7 +47,7 @@ public class VeterinaryController {
   }
 
   @PutMapping("/{id}")
-  public void updateVeterinary(@PathVariable("id") UUID id, @RequestBody @Valid Veterinary veterinary ) {
+  public void updateVeterinary(@PathVariable("id") UUID id, @RequestBody @Valid Veterinary veterinary) {
     veterinary.setId(id);
     this.repo.save(veterinary);
   }

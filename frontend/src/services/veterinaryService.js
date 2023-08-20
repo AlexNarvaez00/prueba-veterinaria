@@ -15,10 +15,18 @@ export function getVeterinary(id) {
 }
 
 export function createNewVeterinary(data) {
-  return axios.post(BASE_URL + `veterinaries/create`, data,{
+  return axios.post(BASE_URL + `veterinaries/create`, data, {
     headers: {
-       'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export function updateVeterinary(id, data) {
+  return axios.put(BASE_URL + `veterinaries/${id}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 }
 

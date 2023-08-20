@@ -1,10 +1,14 @@
-import { Button, Label, TextInput } from "flowbite-react";
+import { useParams } from "react-router-dom";
 import Layout from "./Layout";
-import { useId, useState } from "react";
-import { createNewVeterinary } from "../../services/veterinaryService";
-import ErrorMessages from "../../components/ErrorMessages";
+import { useEffect, useId, useState } from "react";
+import { createNewVeterinary, getVeterinary, updateVeterinary } from "../../services/veterinaryService";
+import { Button, Label, TextInput } from "flowbite-react";
 
-const Create = () => {
+const Edit = () => {
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [veterinary, setVeterinary] = useState(null);
+
   const nameId = useId();
   const firstNameId = useId();
   const lastNameId = useId();
@@ -12,16 +16,20 @@ const Create = () => {
 
   const [errors, setErrors] = useState(null);
 
+  const handleChange = (event) => {
+    setVeterinary({ ...veterinary, [event.target.name]: event.target.value });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
-    createNewVeterinary(formJson)
+    updateVeterinary(id,formJson)
       .then((res) => {
         const { data } = res;
-        setErrors(null)
-        form.reset();
+        setErrors(null);
+        setVeterinary({});
       })
       .catch((error) => {
         const { data } = error.response;
@@ -29,18 +37,30 @@ const Create = () => {
       });
   };
 
+  useEffect(() => {
+    getVeterinary(id).then((res) => {
+      const { data } = res;
+      setVeterinary(data);
+      setIsLoading(false);
+    });
+  }, []);
+
   return (
     <Layout
       navigation={[
         {
-          text: "create",
-          link: "/veterinaries/create",
+          text: veterinary?.id,
+          link: "/veterinaries/" + veterinary?.id,
+        },
+        {
+          text: "edit",
+          link: "/veterinaries/" + veterinary?.id + "/edit",
         },
       ]}
     >
-      <h1 className="text-4xl my-5">Veterinary Form</h1>
+      <h1 className="text-4xl my-5">Veterinary Edit</h1>
       <form
-        method="POST"
+        method="PUT"
         onSubmit={handleSubmit}
         className="flex max-w-md flex-col gap-4"
       >
@@ -52,6 +72,8 @@ const Create = () => {
             id={nameId}
             type="text"
             name="name"
+            value={veterinary?.name}
+            onChange={handleChange}
             color={errors ? (errors.name ? "failure" : "gray") : "gray"}
             helperText={
               errors?.name ? (
@@ -70,6 +92,8 @@ const Create = () => {
             id={firstNameId}
             type="text"
             name="first_name"
+            value={veterinary?.first_name}
+            onChange={handleChange}
             color={errors ? (errors.first_name ? "failure" : "gray") : "gray"}
             helperText={
               errors?.first_name ? (
@@ -88,6 +112,8 @@ const Create = () => {
             id={lastNameId}
             type="text"
             name="last_name"
+            value={veterinary?.last_name}
+            onChange={handleChange}
             color={errors ? (errors.last_name ? "failure" : "gray") : "gray"}
             helperText={
               errors?.last_name ? (
@@ -106,6 +132,8 @@ const Create = () => {
             id={licenseId}
             type="text"
             name="license"
+            value={veterinary?.license}
+            onChange={handleChange}
             color={errors ? (errors.license ? "failure" : "gray") : "gray"}
             helperText={
               errors?.license ? (
@@ -116,9 +144,10 @@ const Create = () => {
             }
           />
         </div>
-        <Button type="submit">Submit</Button>
+
+        <Button type="submit">Update</Button>
       </form>
     </Layout>
   );
 };
-export default Create;
+export default Edit;

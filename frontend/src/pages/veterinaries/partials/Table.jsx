@@ -41,6 +41,7 @@ const TableContainer = () => {
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>First name</Table.HeadCell>
             <Table.HeadCell>Last name</Table.HeadCell>
+            <Table.HeadCell>License</Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
             {veterinaries?.content.map((veterinary) => {
@@ -52,6 +53,10 @@ const TableContainer = () => {
                   <Table.Cell>{veterinary.name}</Table.Cell>
                   <Table.Cell>{veterinary.first_name}</Table.Cell>
                   <Table.Cell>{veterinary.last_name}</Table.Cell>
+                  <Table.Cell>{veterinary.license}</Table.Cell>
+                  <Table.Cell>
+                    <Link to={`/veterinaries/${veterinary.id}/edit`}>Edit</Link>
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

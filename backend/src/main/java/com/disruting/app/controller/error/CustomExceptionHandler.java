@@ -26,25 +26,26 @@ public class CustomExceptionHandler {
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ErrorResponse handleException(MethodArgumentNotValidException e) {
-    HashMap<String, List<ErrorModel>>  errorModels = proceessFieldError(e);
+    HashMap<String, List<ErrorModel>> errorModels = proceessFieldError(e);
     return ErrorResponse.builder().type("VALIDATION").errors(errorModels).build();
   }
 
   public HashMap<String, List<ErrorModel>> proceessFieldError(MethodArgumentNotValidException e) {
-    HashMap<String, List<ErrorModel>> errors = new HashMap<>();
+    var errors = new HashMap<String, List<ErrorModel>>();
     List<FieldError> errorsFields = e.getBindingResult().getFieldErrors();
 
-    for (FieldError errorField : errorsFields) {
+    errorsFields.forEach(errorField -> {
+      String field = errorField.getField();
       String code = errorField.getCode();
       String detail = errorField.getDefaultMessage();
 
-      var error = errors.get(errorField.getField());
+      var error = errors.get(field);
       if (error == null) {
-        error = errors.put(errorField.getField(), new ArrayList<ErrorModel>());
+        error = new ArrayList<ErrorModel>();
+        errors.put(field, error);
       }
-      error.add( ErrorModel.builder().code(code).detail(detail).build()   );
-    }
-
+      error.add(ErrorModel.builder().code(code).detail(detail).build());
+    });
     return errors;
   }
 

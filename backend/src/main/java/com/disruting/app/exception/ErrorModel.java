@@ -10,8 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ErrorModel {
-
+  /**
+   * Causa "Pattern", "Min", "Max" ....
+   */
   private String code;
+  /**
+   * Descripcion del problema
+   */
   private String detail;
-  private String source;
+  // private String source;
 }

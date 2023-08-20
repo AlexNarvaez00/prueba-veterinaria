@@ -10,8 +10,16 @@ export function getAllVeterinaries(page) {
   });
 }
 
+export function getVeterinary(id) {
+  return axios.get(BASE_URL + `veterinaries/` + id);
+}
+
 export function createNewVeterinary(data) {
-  return axios.post(BASE_URL + `veterinaries`, data);
+  return axios.post(BASE_URL + `veterinaries/create`, data,{
+    headers: {
+       'Content-Type': 'application/json'
+    }
+  });
 }
 
 export function deleteVeterinary(id) {

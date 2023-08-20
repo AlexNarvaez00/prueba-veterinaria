@@ -1,6 +1,7 @@
 package com.disruting.app.controller.error;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.context.annotation.Configuration;
@@ -25,24 +26,26 @@ public class CustomExceptionHandler {
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ErrorResponse handleException(MethodArgumentNotValidException e) {
-    List<ErrorModel> errorModels = proceessFieldError(e);
-
+    HashMap<String, List<ErrorModel>>  errorModels = proceessFieldError(e);
     return ErrorResponse.builder().type("VALIDATION").errors(errorModels).build();
   }
 
-  public List<ErrorModel> proceessFieldError(MethodArgumentNotValidException e) {
-    List<ErrorModel> validationsErrorModels = new ArrayList<>();
+  public HashMap<String, List<ErrorModel>> proceessFieldError(MethodArgumentNotValidException e) {
+    HashMap<String, List<ErrorModel>> errors = new HashMap<>();
+    List<FieldError> errorsFields = e.getBindingResult().getFieldErrors();
 
-    for (FieldError errorField : e.getBindingResult().getFieldErrors()) {
-
+    for (FieldError errorField : errorsFields) {
       String code = errorField.getCode();
-      String source = errorField.getObjectName() + "/" + errorField.getField();
-      String detail = errorField.getField() + " " + errorField.getDefaultMessage();
+      String detail = errorField.getDefaultMessage();
 
-      validationsErrorModels.add(ErrorModel.builder().code(code).source(source).detail(detail).build());
+      var error = errors.get(errorField.getField());
+      if (error == null) {
+        error = errors.put(errorField.getField(), new ArrayList<ErrorModel>());
+      }
+      error.add( ErrorModel.builder().code(code).detail(detail).build()   );
     }
 
-    return validationsErrorModels;
+    return errors;
   }
 
 }

@@ -1,6 +1,7 @@
 package com.disruting.app.exception;
 
 import java.util.List;
+import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ErrorResponse {
   private String type;
-  private List<ErrorModel> errors;
+  private HashMap<String,List<ErrorModel>> errors;
+  //private List<ErrorModel> errors;
 }
